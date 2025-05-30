@@ -27,15 +27,15 @@ function navigateToEmail() {
             var transmittalCC = emailList.join(", ");
             console.log("Transmittal CC:", transmittalCC);
 
-          // Retrieve related SendTo emails via many-to-many relationship
+          // Retrieve related Project Transmittal SendTo table column name:emails, via many-to-many relationship to Transmittal Table
 Xrm.WebApi.retrieveRecord("crbd5_transmittalregister", transmittalId,
-    "?$expand=new_projecttransmittalsendto($select=new_emailaddress)").then(
+    "?$expand=new_TransmittalSendtoUID($select=new_emailaddress)").then(
     function (sendToResult) {
         var sendToEmails = [];
 
         // Must match the $expand property name
-        if (sendToResult.new_projecttransmittalsendto) {
-            sendToResult.new_projecttransmittalsendto.forEach(function (record) {
+        if (sendToResult.new_TransmittalSendtoUID) {
+            sendToResult.new_TransmittalSendtoUID.forEach(function (record) {
                 if (record.new_emailaddress) {
                     sendToEmails.push(record.new_emailaddress);
                 }
