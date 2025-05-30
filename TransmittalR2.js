@@ -28,6 +28,24 @@ function navigateToEmail() {
             var transmittalCC = emailList.join(", ");
             console.log("Transmittal CC:", transmittalCC);
 
+             // Retrieve related SendTo emails via many-to-many relationship
+            Xrm.WebApi.retrieveRecord("new_transmittalregister", transmittalId, "?$expand=ProjectTransmittalSentEmail_new_ProjectTransmittalSendto_new_ProjectTransmittalSendto($select=new_emailaddress)").then(
+                function (sendToResult) {
+                    var sendToEmails = [];
+
+                    if (sendToResult.new_transmittal_sendto) {
+                        sendToResult.new_transmittal_sendto.forEach(function (record) {
+                            if (record.new_emailaddress) {
+                                sendToEmails.push(record.new_emailaddress);
+                            }
+                        });
+                    }
+
+                    var sendToValue = sendToEmails.join(", ");
+                    console.log("Transmittal SendTo:", sendToValue);
+
+
+
             // Always create a new record
             console.log("Creating a new Sent Email Record.");
 
@@ -38,6 +56,7 @@ function navigateToEmail() {
             var formParameters = {
                 new_emailtransmittaluid: transmittalId,
                 new_mail: transmittalTitleValue,
+                new_sendto: sendToValue,
                 new_cc: transmittalCC,
                 new_subject: "Transmittal " + transmittalNumber + " for " + transmittalTitleValue,
                 new_body:
