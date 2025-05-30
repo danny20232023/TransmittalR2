@@ -13,7 +13,7 @@ function navigateToEmail() {
     console.log("Transmittal Project Number:", transmittalProjectNumberValue);
 
     // Retrieve all CC emails
-    Xrm.WebApi.retrieveMultipleRecords("new_projecttransmittalcc", "?$select=new_email").then(
+    Xrm.WebApi.retrieveMultipleRecords("new_projecttransmittalcc", "?$select=new_email&$filter=new_iscc eq true").then(
         function (ccResult) {
             var emailList = [];
 
