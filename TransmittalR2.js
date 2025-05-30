@@ -11,7 +11,7 @@ function navigateToEmail() {
     console.log("Transmittal Number:", transmittalNumber);
     console.log("Transmittal Title:", transmittalTitleValue);
     console.log("Transmittal Project Number:", transmittalProjectNumberValue);
-    console.log("Transmittal CC:", transmittalCC);
+   
 
      // Retrieve ALL emails from the Project Transmittal CC table
     Xrm.WebApi.retrieveMultipleRecords("new_projecttransmittalcc", "?$select=new_email").then(
