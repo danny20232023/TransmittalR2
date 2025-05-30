@@ -29,13 +29,13 @@ function navigateToEmail() {
 
           // Retrieve related SendTo emails via many-to-many relationship
 Xrm.WebApi.retrieveRecord("crbd5_transmittalregister", transmittalId,
-    "?$expand=TransmittalSendtoUID($select=new_emailaddress)").then(
+    "?$expand=new_projecttransmittalsendto($select=new_emailaddress)").then(
     function (sendToResult) {
         var sendToEmails = [];
 
         // Must match the $expand property name
-        if (sendToResult.TransmittalSendtoUID) {
-            sendToResult.TransmittalSendtoUID.forEach(function (record) {
+        if (sendToResult.new_projecttransmittalsendto) {
+            sendToResult.new_projecttransmittalsendto.forEach(function (record) {
                 if (record.new_emailaddress) {
                     sendToEmails.push(record.new_emailaddress);
                 }
