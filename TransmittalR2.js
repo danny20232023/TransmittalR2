@@ -27,21 +27,23 @@ function navigateToEmail() {
             var transmittalCC = emailList.join(", ");
             console.log("Transmittal CC:", transmittalCC);
 
-            // Retrieve related SendTo emails via many-to-many relationship
-            Xrm.WebApi.retrieveRecord("new_transmittalregister", transmittalId, "?$expand=ProjectTransmittalSentEmail_new_ProjectTransmittalSendto_new_ProjectTransmittalSendto($select=new_emailaddress)").then(
-                function (sendToResult) {
-                    var sendToEmails = [];
+          // Retrieve related SendTo emails via many-to-many relationship
+Xrm.WebApi.retrieveRecord("crbd5_transmittalregister", transmittalId,
+    "?$expand=TransmittalSendtoUID($select=new_emailaddress)").then(
+    function (sendToResult) {
+        var sendToEmails = [];
 
-                    if (sendToResult.new_transmittal_sendto) {
-                        sendToResult.new_transmittal_sendto.forEach(function (record) {
-                            if (record.new_emailaddress) {
-                                sendToEmails.push(record.new_emailaddress);
-                            }
-                        });
-                    }
+        // Must match the $expand property name
+        if (sendToResult.TransmittalSendtoUID) {
+            sendToResult.TransmittalSendtoUID.forEach(function (record) {
+                if (record.new_emailaddress) {
+                    sendToEmails.push(record.new_emailaddress);
+                }
+            });
+        }
 
-                    var sendToValue = sendToEmails.join(", ");
-                    console.log("Transmittal SendTo:", sendToValue);
+        var sendToValue = sendToEmails.join(", ");
+        console.log("Transmittal SendTo:", sendToValue);
 
                     // Create the new record with all populated fields
                     var entityFormOptions = {
